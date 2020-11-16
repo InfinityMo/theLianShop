@@ -1,18 +1,28 @@
 <template>
   <div class="page">
     <div class="search-wrap">
-      <el-form class="form-inline"
-               ref="searchForm">
-        <!-- <el-col :span="9">
-          <el-form-item label="店铺名称：">
-            <el-input placeholder="请输入内容"
+      <el-form class="demo-form-inline">
+        <el-col :span="7">
+          <el-form-item label="商品名称："
+                        label-width="80px">
+            <el-input placeholder="请输入商品名称"
                       v-model="input"
                       clearable>
             </el-input>
           </el-form-item>
-        </el-col> -->
-        <el-col :span="3">
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="商品类型："
+                        label-width="80px">
+            <el-cascader :options="options"
+                         :props="{ checkStrictly: true }"
+                         clearable>
+            </el-cascader>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
           <el-form-item class="search-btn">
+            <el-button @click="queryHandel">重置</el-button>
             <el-button type="primary"
                        @click="queryHandel">查询</el-button>
           </el-form-item>

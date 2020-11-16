@@ -3,7 +3,7 @@
     <!-- logo -->
     <div class="flex-between-center logo-wrap">
       <img class="logo"
-           src="@/assets/img/system/logo.png">
+           src="@/assets/img/system/logo.svg">
       <img class="title"
            src="@/assets/img/system/title.png">
     </div>
@@ -65,7 +65,6 @@
           </el-menu-item>
         </div>
       </div>
-
     </el-menu>
   </div>
 </template>
