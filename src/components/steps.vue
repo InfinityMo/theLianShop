@@ -3,13 +3,15 @@
     <ul class="flex-item-center step-wrap">
       <li v-for="(step,index) in stepsData"
           :key="index"
-          class="flex-between-center"
-          :class="{'flex-basis':index!==stepsData.length-1}">
-        <div class="flex-item-center title">
+          class="flex-item-center"
+          :class="{'flex-basis':index!==stepsData.length-1,'is-flex':index===stepsData.length-1}">
+        <div class="flex-item-center title"
+             :class="{'text-active':active>=index}">
           <span>{{index+1}}</span>
           <label>{{step}}</label>
         </div>
         <div class="line"
+             :class="{'line-active':active>index}"
              v-if="index!==stepsData.length-1"></div>
       </li>
     </ul>
@@ -28,19 +30,34 @@ export default {
       required: true,
       default: 0
     }
-  }
+  },
+  data () {
+    return {
 
+    }
+  },
+  mounted () {
+    console.log(this.active)
+  },
+  methods: {
+
+  }
 }
 </script>
 <style lang="less" scoped>
 .step-wrap {
   .flex-basis {
-    flex-basis: 45%;
+    flex-basis: 50%;
   }
   li {
-    color: #AAA;
+    position: relative;
+    color: #aaa;
     .title {
-      margin-right: 20px;
+      position: absolute;
+      left: 0;
+      padding: 0 20px;
+      background-color: #fff;
+      // margin-right: 20px;
       span {
         width: 32px;
         height: 32px;
@@ -56,14 +73,37 @@ export default {
         font-size: 18px;
       }
     }
+    .title:last-child {
+      position: relative;
+    }
+    .text-active {
+      span {
+        color: #fff;
+        border: 1px solid #2bb8bd;
+        background-color: #2bb8bd;
+      }
+      label {
+        color: #333;
+      }
+    }
 
     .line {
-      width: calc(100% - 154px);
+      width: 100%;
+      // margin-left: 20px;
       height: 1px;
-      border-bottom-color: #F0F0F0;
+      border-bottom-color: #f0f0f0;
       border-bottom: 1px solid;
       box-sizing: border-box;
     }
+    .line-active {
+      border-bottom-color: #2bb8bd;
+    }
+  }
+
+  .is-flex {
+    flex-basis: auto !important;
+    flex-shrink: 0;
+    flex-grow: 0;
   }
 }
 </style>
