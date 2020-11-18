@@ -8,10 +8,10 @@ import store from '@/store'
 import { Message } from 'element-ui'
 const { VUE_APP_API } = process.env
 // import router from '@/router'
-// 创建axios实例，设置超时时间为7S
+// 创建axios实例，设置超时时间为5S
 const instance = axios.create({
   baseURL: VUE_APP_API,
-  timeout: 50
+  timeout: 5000
 })
 // instance.defaults.withCredentials = true // 配置跨域，需要跨域时将此配置加上，同时需要后端配合开放跨域
 // 设置post请求默认 Content-Type
@@ -118,5 +118,11 @@ export default {
       store.commit('setSpinning', true)
     }
     return instance.get(url, params)
+  },
+  mock (url, params, spinning) {
+    return axios.get(url).then(res => {
+      store.commit('setSpinning', false)
+      return res.data
+    })
   }
 }

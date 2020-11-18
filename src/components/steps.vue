@@ -37,7 +37,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.active)
+
   },
   methods: {
 
@@ -55,9 +55,9 @@ export default {
     .title {
       position: absolute;
       left: 0;
+      top: -16px;
       padding: 0 20px;
       background-color: #fff;
-      // margin-right: 20px;
       span {
         width: 32px;
         height: 32px;
@@ -75,6 +75,7 @@ export default {
     }
     .title:last-child {
       position: relative;
+      top: 0;
     }
     .text-active {
       span {
@@ -89,7 +90,6 @@ export default {
 
     .line {
       width: 100%;
-      // margin-left: 20px;
       height: 1px;
       border-bottom-color: #f0f0f0;
       border-bottom: 1px solid;
