@@ -5,25 +5,31 @@
       <Step :stepsData="stepsData"
             class="step"
             :active='active' />
-      <step-one @nextHandle="nextHandle" />
+      <step-one @stepOne="stepOne"
+                v-show="active===0" />
+      <step-two @stepTwo="stepTwo"
+                @stepTwoBack="stepTwoBack"
+                v-show="active===1" />
       <Tip />
     </div>
   </div>
 </template>
 <script>
 import Step from '@/components/steps'
-import StepOne from './stepOne'
+import StepOne from './steps/stepOne'
+import StepTwo from './steps/stepTwo'
 import Tip from './tip'
 export default {
   components: {
     Step,
     StepOne,
+    StepTwo,
     Tip
   },
   data () {
     return {
       stepsData: ['基本信息', '图片/规格', '完成'],
-      active: 0
+      active: 1
     }
   },
 
@@ -32,8 +38,14 @@ export default {
   },
 
   methods: {
-    nextHandle () {
+    stepOne (data) {
       this.active++
+    },
+    stepTwo (data) {
+      this.active++
+    },
+    stepTwoBack () {
+      this.active--
     }
     // next () {
     //   if (this.active++ > 2) this.active = 0

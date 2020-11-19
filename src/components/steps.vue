@@ -1,18 +1,19 @@
 <template>
   <div>
     <ul class="flex-item-center step-wrap">
-      <li v-for="(step,index) in stepsData"
+      <li v-for="(step,index) in stepsArr"
           :key="index"
           class="flex-item-center"
-          :class="{'flex-basis':index!==stepsData.length-1,'is-flex':index===stepsData.length-1}">
-        <div class="flex-item-center title"
-             :class="{'text-active':active>=index}">
-          <span>{{index+1}}</span>
-          <label>{{step}}</label>
+          :class="{'flex-basis':index!==stepsArr.length-1,'is-flex':index===stepsArr.length-1}">
+        <div class="flex-item-center title">
+          <span v-if="step.active===false">{{index+1}}</span>
+          <span v-else
+                class="item-scccess"></span>
+          <label>{{step.value}}</label>
         </div>
         <div class="line"
              :class="{'line-active':active>index}"
-             v-if="index!==stepsData.length-1"></div>
+             v-if="index!==stepsArr.length-1"></div>
       </li>
     </ul>
   </div>
@@ -31,16 +32,17 @@ export default {
       default: 0
     }
   },
-  data () {
-    return {
-
+  computed: {
+    stepsArr () {
+      const steps = []
+      this.stepsData.map((item, index) => {
+        steps.push({
+          value: item,
+          active: this.active > index
+        })
+      })
+      return steps
     }
-  },
-  mounted () {
-
-  },
-  methods: {
-
   }
 }
 </script>
@@ -69,6 +71,11 @@ export default {
         border: 1px solid #aaa;
         box-sizing: border-box;
       }
+      .item-scccess {
+        border: 1px solid #2bb8bd;
+        background: url("../assets/img/icons/step-success.png") center center
+          no-repeat;
+      }
       label {
         font-size: 18px;
       }
@@ -81,7 +88,6 @@ export default {
       span {
         color: #fff;
         border: 1px solid #2bb8bd;
-        background-color: #2bb8bd;
       }
       label {
         color: #333;
@@ -99,7 +105,15 @@ export default {
       border-bottom-color: #2bb8bd;
     }
   }
-
+  li:first-child {
+    .title {
+      span {
+        color: #fff;
+        border: 1px solid #2bb8bd;
+        background-color: #2bb8bd;
+      }
+    }
+  }
   .is-flex {
     flex-basis: auto !important;
     flex-shrink: 0;

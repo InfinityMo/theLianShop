@@ -1,17 +1,18 @@
 <template>
   <div class="from-wrap clearfix">
     <el-form label-width="110px"
-             :model="ruleForm"
+             ref="stepFrom"
+             :model="stepOneForm"
              :rules="stepOneFormRules"
              class="form">
       <el-form-item label="商品名称："
                     prop="wareName">
-        <el-input v-model="ruleForm.wareName"
+        <el-input v-model="stepOneForm.wareName"
                   placeholder="请输入商品名称"></el-input>
       </el-form-item>
       <el-form-item label="品牌名称："
                     prop="brandName">
-        <el-select v-model="ruleForm.brandName"
+        <el-select v-model="stepOneForm.brandName"
                    placeholder="请选择品牌名称">
           <el-option v-for="item in brandArr"
                      :key="item.value"
@@ -20,15 +21,9 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="商品类型："
-                    prop="wareType">
-        <el-cascader :options="wareTypeOptions"
-                     placeholder="请选择商品类型"
-                     clearable></el-cascader>
-      </el-form-item> -->
       <el-form-item label="所属类目："
                     prop="wareType">
-        <el-cascader v-model="ruleForm.wareType"
+        <el-cascader v-model="stepOneForm.wareType"
                      clearable
                      separator=" - "
                      placeholder="请选择所属类目"
@@ -37,9 +32,9 @@
       </el-form-item>
       <el-form-item label="商品保质期：">
         <el-input placeholder="请输入商品保质期"
-                  v-model="ruleForm.wareDate"
+                  v-model="stepOneForm.wareDate"
                   class="input-with-select">
-          <el-select v-model="ruleForm.wareDateType"
+          <el-select v-model="stepOneForm.wareDateType"
                      placeholder=""
                      slot="append">
             <el-option v-for="item in wareDateType"
@@ -52,13 +47,13 @@
       </el-form-item>
       <el-form-item label="限购数量："
                     prop="limitNum">
-        <el-input v-model="ruleForm.limitNum"
+        <el-input v-model="stepOneForm.limitNum"
                   placeholder="请输入商品限购数量"></el-input>
       </el-form-item>
       <el-form-item label="上/下架时间："
                     prop="saleTime">
         <el-date-picker class="form-date-picker"
-                        v-model="ruleForm.saleTime"
+                        v-model="stepOneForm.saleTime"
                         value-format="yyyy-MM-dd HH:mm"
                         format="yyyy-MM-dd HH:mm"
                         type="datetimerange"
@@ -75,7 +70,7 @@
                   :rows="2"
                   resize="none"
                   placeholder="请对商品的重要特征即及需要用户注意的事项进行描述"
-                  v-model="ruleForm.desc">
+                  v-model="stepOneForm.desc">
         </el-input>
       </el-form-item>
     </el-form>
@@ -90,7 +85,7 @@ export default {
   data () {
     return {
       stepOneFormRules: stepOneFormRules,
-      ruleForm: JSON.parse(JSON.stringify(stepOneForm)),
+      stepOneForm: JSON.parse(JSON.stringify(stepOneForm)),
       wareDateType: [
         {
           value: '1',
@@ -136,11 +131,17 @@ export default {
       })
     },
     next () {
-      this.$emit('nextHandle')
+      this.$refs.stepFrom.validate((valid) => {
+        if (valid) {
+          this.$emit('stepOne', this.stepOneForm)
+        } else {
+          return false
+        }
+      })
     }
   }
 }
 </script>
 <style lang="less" scoped>
-@import "./step";
+@import "./stepOne.less";
 </style>

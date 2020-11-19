@@ -110,23 +110,38 @@
 
 .el-form-item__label,
 .el-input__inner {
-  color: #333;
+  color: #333 !important;
 }
 
 .el-input__inner {
   border: 1px solid #D9D9D9;
 }
 
-.el-input__inner::placeholder {
+.el-input__inner::placeholder,
+.el-textarea__inner::placeholder {
   font-size: 12px;
 }
 
 .el-input__inner:hover {
   border: 1px solid #b3b3b3;
 }
+
 .el-input.is-active .el-input__inner,
 .el-input__inner:focus {
   border-color: #2BB8BD;
+}
+
+.el-date-editor .el-range__icon {
+  line-height: normal;
+}
+
+.el-icon-time:before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url('../../assets/img/icons/date-time.png')center center no-repeat;
 }
 
 // 高级搜索表单
