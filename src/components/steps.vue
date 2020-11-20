@@ -8,7 +8,7 @@
         <div class="flex-item-center title">
           <span v-if="step.active===false">{{index+1}}</span>
           <span v-else
-                class="item-scccess"></span>
+                class="item-success"></span>
           <label>{{step.value}}</label>
         </div>
         <div class="line"
@@ -38,7 +38,7 @@ export default {
       this.stepsData.map((item, index) => {
         steps.push({
           value: item,
-          active: this.active > index
+          active: this.active === this.stepsData.length - 1 ? true : this.active > index
         })
       })
       return steps
@@ -71,7 +71,7 @@ export default {
         border: 1px solid #aaa;
         box-sizing: border-box;
       }
-      .item-scccess {
+      .item-success {
         border: 1px solid #2bb8bd;
         background: url("../assets/img/icons/step-success.png") center center
           no-repeat;

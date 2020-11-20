@@ -10,6 +10,7 @@
       <step-two @stepTwo="stepTwo"
                 @stepTwoBack="stepTwoBack"
                 v-show="active===1" />
+      <step-three v-show="active===2" />
       <Tip />
     </div>
   </div>
@@ -18,18 +19,20 @@
 import Step from '@/components/steps'
 import StepOne from './steps/stepOne'
 import StepTwo from './steps/stepTwo'
+import StepThree from './steps/stepThree'
 import Tip from './tip'
 export default {
   components: {
     Step,
     StepOne,
     StepTwo,
+    StepThree,
     Tip
   },
   data () {
     return {
       stepsData: ['基本信息', '图片/规格', '完成'],
-      active: 1
+      active: 0
     }
   },
 

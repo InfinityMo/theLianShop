@@ -131,13 +131,14 @@ export default {
       })
     },
     next () {
-      this.$refs.stepFrom.validate((valid) => {
-        if (valid) {
-          this.$emit('stepOne', this.stepOneForm)
-        } else {
-          return false
-        }
-      })
+      this.$emit('stepOne', this.stepOneForm)
+      // this.$refs.stepFrom.validate((valid) => {
+      //   if (valid) {
+      //     this.$emit('stepOne', this.stepOneForm)
+      //   } else {
+      //     return false
+      //   }
+      // })
     }
   }
 }
