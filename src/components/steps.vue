@@ -6,8 +6,10 @@
           class="flex-item-center"
           :class="{'flex-basis':index!==stepsArr.length-1,'is-flex':index===stepsArr.length-1}">
         <div class="flex-item-center title">
-          <span v-if="step.active===false">{{index+1}}</span>
-          <span v-else
+          <span v-if="step.status==='normal'">{{index+1}}</span>
+          <span class="item-active"
+                v-else-if="step.status==='active'">{{index+1}}</span>
+          <span v-else-if="step.status==='success'"
                 class="item-success"></span>
           <label>{{step.value}}</label>
         </div>
@@ -36,10 +38,43 @@ export default {
     stepsArr () {
       const steps = []
       this.stepsData.map((item, index) => {
-        steps.push({
-          value: item,
-          active: this.active === this.stepsData.length - 1 ? true : this.active > index
-        })
+        // steps.push({
+        //   value: item,
+        //   status: this.active === this.stepsData.length - 1 ? true : this.active > index
+        // })
+        switch (this.active) {
+          case 0:
+            steps.push({
+              value: item,
+              status: index === this.active ? 'active' : 'normal'
+            })
+            break
+          case 1:
+            if (index === 0) {
+              steps.push({
+                value: item,
+                status: 'success'
+              })
+            } else if (index === 1) {
+              steps.push({
+                value: item,
+                status: 'active'
+              })
+            } else {
+              steps.push({
+                value: item,
+                status: 'normal'
+              })
+            }
+
+            break
+          case 2:
+            steps.push({
+              value: item,
+              status: 'success'
+            })
+            break
+        }
       })
       return steps
     }
@@ -71,6 +106,11 @@ export default {
         border: 1px solid #aaa;
         box-sizing: border-box;
       }
+      .item-active {
+        color: #fff;
+        border: 1px solid #2bb8bd;
+        background-color: #2bb8bd;
+      }
       .item-success {
         border: 1px solid #2bb8bd;
         background: url("../assets/img/icons/step-success.png") center center
@@ -84,15 +124,15 @@ export default {
       position: relative;
       top: 0;
     }
-    .text-active {
-      span {
-        color: #fff;
-        border: 1px solid #2bb8bd;
-      }
-      label {
-        color: #333;
-      }
-    }
+    // .text-active {
+    //   span {
+    //     color: #fff;
+    //     border: 1px solid #2bb8bd;
+    //   }
+    //   label {
+    //     color: #333;
+    //   }
+    // }
 
     .line {
       width: 100%;
