@@ -21,6 +21,7 @@ import StepOne from './steps/stepOne'
 import StepTwo from './steps/stepTwo'
 import StepThree from './steps/stepThree'
 import Tip from './tip'
+import { backTop } from '@/common/utils/funcStore'
 export default {
   components: {
     Step,
@@ -42,6 +43,7 @@ export default {
 
   methods: {
     stepOne (data) {
+      backTop()
       this.active++
     },
     stepTwo (data) {
@@ -49,6 +51,7 @@ export default {
     },
     stepTwoBack () {
       this.active--
+      backTop()
     }
     // next () {
     //   if (this.active++ > 2) this.active = 0
