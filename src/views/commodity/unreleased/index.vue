@@ -49,7 +49,7 @@
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-
+    <drawer-edit></drawer-edit>
   </div>
 </template>
 <script>
@@ -119,17 +119,7 @@ export default {
     // },
     // 新增
     addHandle () {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.addEditId = ''
-        this.modalTitle = '新增店铺'
-        this.modalShow = true
-      })
+      this.$router.push('/commodity/add')
     },
     editMoadl (scoped) {
       this._getSelectData(6).then(res => {
