@@ -85,7 +85,7 @@ export default {
   data () {
     return {
       stepOneFormRules: stepOneFormRules,
-      stepOneForm: JSON.parse(JSON.stringify(stepOneForm)),
+      stepOneForm: Object.assign({}, stepOneForm),
       wareDateType: [
         {
           value: '1',

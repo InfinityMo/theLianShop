@@ -13,7 +13,9 @@
           </div>
         </el-form-item>
       </el-row>
-      <p class="step-title"><em>*</em>商品规格：<span>可最多添加5个商品规格</span></p>
+      <p class="step-title">
+        <em>*</em>商品规格：<span>可最多添加5个商品规格</span>
+      </p>
       <div class="commodity-item"
            v-for="(commodity, index) in commodityData.commodityArr"
            :key="index">

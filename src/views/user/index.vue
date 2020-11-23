@@ -88,7 +88,7 @@ export default {
     }
   },
   created () {
-    this.getSelects()
+    // this.getSelects()
   },
   mounted () {
     this.getTableData() // 获取列表数据
@@ -99,17 +99,7 @@ export default {
         this.selectOption = res
       }) // 获取下拉框数据
     },
-    getTableData () {
-      this.$request.post('/shopSelect', {
-        pageNum: this.PAGING.pageNum,
-        pageSize: this.PAGING.pageSize,
-        ...this.queryFrom
-      }).then(res => {
-        const resData = res.data.result || []
-        this.tableData = resData
-        this.PAGING.total = res.data.total
-      })
-    },
+
     // 新增
     addHandle () {
       this._getSelectData(6).then(res => {

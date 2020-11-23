@@ -113,4 +113,7 @@ export default {
     font-size: 12px;
   }
 }
+/deep/.el-upload--picture-card {
+  border-radius: 2px;
+}
 </style>

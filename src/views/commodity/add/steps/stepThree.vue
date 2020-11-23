@@ -4,8 +4,9 @@
     <h3>新增成功</h3>
     <p>可在未发布中查看或再次编辑已新增的商品</p>
     <div class="btn-group">
-      <el-button type="primary">继续新增</el-button>
-      <el-button>查看商品</el-button>
+      <el-button type="primary"
+                 @click="continueAdd">继续新增</el-button>
+      <el-button @click="viewCommodity">查看商品</el-button>
     </div>
   </div>
 </template>
@@ -20,7 +21,12 @@ export default {
 
   },
   methods: {
+    continueAdd () {
 
+    },
+    viewCommodity () {
+
+    }
   }
 }
 </script>

@@ -1,20 +1,25 @@
 <template>
   <div class="page">
     <div class="search-wrap">
-      <el-form class="demo-form-inline">
+      <el-form class="demo-form-inline"
+               :model="searchForm"
+               ref="searchForm">
         <el-col :span="7">
           <el-form-item label="商品名称："
-                        label-width="80px">
+                        label-width="80px"
+                        prop="commodityName">
             <el-input placeholder="请输入商品名称"
-                      v-model="input"
+                      v-model="searchForm.commodityName"
                       clearable>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="商品类型："
-                        label-width="80px">
-            <el-cascader :options="options"
+                        label-width="80px"
+                        prop="commodityType">
+            <el-cascader :options="wareTypeOptions"
+                         v-model="searchForm.commodityType"
                          :props="{ checkStrictly: true }"
                          clearable>
             </el-cascader>
@@ -22,7 +27,7 @@
         </el-col>
         <el-col :span="10">
           <el-form-item class="search-btn">
-            <el-button @click="queryHandel">重置</el-button>
+            <el-button @click="resetForm('searchForm')">重置</el-button>
             <el-button type="primary"
                        @click="queryHandel">查询</el-button>
           </el-form-item>
@@ -30,80 +35,88 @@
       </el-form>
     </div>
     <div class="table-wrap">
-      <div class="flex-item-center table-info">
+      <div class="flex-between-center table-info">
         <h4>店铺信息列表</h4>
         <el-button type="primary"
-                   @click="addHandle">新增</el-button>
+                   @click="addHandle"
+                   class="flex-center add-btn">
+          <i class="add-icon"></i>
+          <label>新增商品</label>
+        </el-button>
       </div>
       <standard-table :dataSource="tableData"
                       :columns="columns"
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <Dialog :modalTitle="modalTitle"
-            :addEditId="addEditId"
-            :brandArr="brandArr"
-            v-if="modalShow"
-            :modalShow="modalShow"
-            @modalCancel="modalCancel"
-            @modalConfirm="modalConfirm" />
+
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/dealTable'
 import { columnsData } from './columnsData.js'
-import Dialog from './dialog'
 import { tableSearchForm } from './searchForm'
 
 export default {
   mixins: [tableMixin],
-  components: { Dialog },
   data () {
     return {
       tipContent: '',
-      searchForm: JSON.parse(JSON.stringify(tableSearchForm)),
+      searchForm: tableSearchForm,
       queryFrom: { RowGuid: '' },
       columns: columnsData(this.$createElement, this),
       tableData: [],
-      selectOption: [],
-      modalTitle: '', // 弹窗的名称
-      modalShow: false,
-      addEditId: '', // 编辑时存在id，新增时id为空
-      brandArr: [] // 弹窗品牌穿梭框数据
+      wareTypeOptions: [
+        {
+          value: 'xihu',
+          label: '洗护',
+          children: [{
+            value: 'xx',
+            label: '香薰',
+            children: [{
+              value: 'jc',
+              label: '绿茶籽'
+            }]
+          }]
+        }
+      ]
     }
   },
   watch: {
-    'searchForm.RowGuid' (newVal, oldVal) {
-      if (newVal.length && newVal.length > 0) {
-        this.tipContent = this.selectOption.filter(item => item.value === this.searchForm.RowGuid[0])[0].label
-      } else {
-        this.tipContent = ''
-      }
-    }
+
   },
   created () {
-    this.getSelects()
+
   },
   mounted () {
-    this.getTableData() // 获取列表数据
+    // this.getTableData()
   },
   methods: {
+    // getTableData () {
+    //   this.$request.post('/splm.asp', {
+    //     spurl32: encodeURI('https://detail.tmall.com/item.htm?spm=a220o.1000855.0.0.6aa63e36iDeLes&pvid=700d7ecf-b3b6-41b4-8cba-5c98c0a3e734&pos=1&acm=03067.1003.1.1977615&id=544772098737&scm=1007.12776.82642.100200300000000'),
+    //     Submit: encodeURI('查询'),
+    //     fyj: encodeURI('sp')
+    //   }).then(res => {
+    //     debugger
+    //   })
+    // },
     getSelects () {
       this._getSelectData(1).then(res => {
         this.selectOption = res
       }) // 获取下拉框数据
     },
-    getTableData () {
-      this.$request.post('/shopSelect', {
-        pageNum: this.PAGING.pageNum,
-        pageSize: this.PAGING.pageSize,
-        ...this.queryFrom
-      }).then(res => {
-        const resData = res.data.result || []
-        this.tableData = resData
-        this.PAGING.total = res.data.total
-      })
-    },
+    // getTableData () {
+    //   this.$request.post('/shopSelect', {
+    //     pageNum: this.PAGING.pageNum,
+    //     pageSize: this.PAGING.pageSize,
+    //     ...this.queryFrom
+    //   }).then(res => {
+    //     const resData = res.data.result || []
+    //     this.tableData = resData
+    //     this.PAGING.total = res.data.total
+    //   })
+    // },
     // 新增
     addHandle () {
       this._getSelectData(6).then(res => {

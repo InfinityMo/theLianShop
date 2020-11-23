@@ -43,11 +43,12 @@ export default {
 
   methods: {
     stepOne (data) {
-      backTop()
       this.active++
+      backTop()
     },
     stepTwo (data) {
       this.active++
+      backTop()
     },
     stepTwoBack () {
       this.active--
