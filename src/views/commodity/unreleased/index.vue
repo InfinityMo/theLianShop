@@ -20,6 +20,7 @@
                         prop="commodityType">
             <el-cascader :options="wareTypeOptions"
                          v-model="searchForm.commodityType"
+                         placeholder="请选择商品类型"
                          :props="{ checkStrictly: true }"
                          clearable>
             </el-cascader>
@@ -36,7 +37,7 @@
     </div>
     <div class="table-wrap">
       <div class="flex-between-center table-info">
-        <h4>店铺信息列表</h4>
+        <h4>未发布列表</h4>
         <el-button type="primary"
                    @click="addHandle"
                    class="flex-center add-btn">
@@ -49,7 +50,11 @@
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <drawer-edit></drawer-edit>
+    <drawer title="查看"
+            :width="'370px'"
+            :drawerShow="drawerShow">
+      <div slot="content">1111</div>
+    </drawer>
   </div>
 </template>
 <script>
@@ -61,7 +66,6 @@ export default {
   mixins: [tableMixin],
   data () {
     return {
-      tipContent: '',
       searchForm: tableSearchForm,
       queryFrom: { RowGuid: '' },
       columns: columnsData(this.$createElement, this),
@@ -79,7 +83,8 @@ export default {
             }]
           }]
         }
-      ]
+      ],
+      drawerShow: false
     }
   },
   watch: {
@@ -89,51 +94,41 @@ export default {
 
   },
   mounted () {
-    // this.getTableData()
+    this.getTableData()
   },
   methods: {
-    // getTableData () {
-    //   this.$request.post('/splm.asp', {
-    //     spurl32: encodeURI('https://detail.tmall.com/item.htm?spm=a220o.1000855.0.0.6aa63e36iDeLes&pvid=700d7ecf-b3b6-41b4-8cba-5c98c0a3e734&pos=1&acm=03067.1003.1.1977615&id=544772098737&scm=1007.12776.82642.100200300000000'),
-    //     Submit: encodeURI('查询'),
-    //     fyj: encodeURI('sp')
-    //   }).then(res => {
-    //     debugger
-    //   })
-    // },
-    getSelects () {
-      this._getSelectData(1).then(res => {
-        this.selectOption = res
-      }) // 获取下拉框数据
+    getTableData () {
+      for (let i = 0; i < 2; i++) {
+        this.tableData.push({
+          commodityName: 'innisfree/悦诗风吟绿茶泡沫洁面乳女 补水保湿温和控油洗面奶男',
+          price: '60 - 80',
+          type: '洁面乳',
+          limitNum: 3,
+          dateTime: '2020-11-25 - 2020-11-28'
+        })
+      }
+      // this.tableData = [{
+
+      // }]
+      this.PAGING.total = 10
+      // this.$request.post('/shopSelect', {
+      //   pageNum: this.PAGING.pageNum,
+      //   pageSize: this.PAGING.pageSize,
+      //   ...this.queryFrom
+      // }).then(res => {
+      //   const resData = res.data.result || []
+      //   this.tableData = resData
+      //   this.PAGING.total = res.data.total
+      // })
     },
-    // getTableData () {
-    //   this.$request.post('/shopSelect', {
-    //     pageNum: this.PAGING.pageNum,
-    //     pageSize: this.PAGING.pageSize,
-    //     ...this.queryFrom
-    //   }).then(res => {
-    //     const resData = res.data.result || []
-    //     this.tableData = resData
-    //     this.PAGING.total = res.data.total
-    //   })
-    // },
     // 新增
     addHandle () {
       this.$router.push('/commodity/add')
     },
     editMoadl (scoped) {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.modalShow = true
-        const { row } = scoped
-        this.addEditId = row.RowGuid
-        this.modalTitle = '编辑店铺'
-      })
+      // const { row } = scoped
+      // debugger
+      this.drawerShow = true
     },
     // modal确认
     modalConfirm () {

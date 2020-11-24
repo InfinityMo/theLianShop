@@ -1,13 +1,10 @@
 <template>
   <div class="drawer-wrap">
-    <!-- <div class="flex-between-center">
-      <h5>编辑</h5>
-      <i class="delete-ico"></i>
-    </div>
-    <slot name="content"></slot> -->
-    <el-drawer title="我是标题"
+    <el-drawer :title="title"
+               :destroy-on-close="true"
+               :size="width"
                custom-class="drawer-box"
-               :visible.sync="drawer"
+               :visible.sync="drawerShowCopy"
                direction="rtl">
       <slot name="content"></slot>
     </el-drawer>
@@ -19,12 +16,27 @@ export default {
     title: {
       type: String,
       default: '查看'
+    },
+    width: {
+      type: String
+    },
+    drawerShow: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    wrapperClosable: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
     return {
-      drawer: true
+      drawerShowCopy: this.drawerShow
     }
+  },
+  mounted () {
+
   }
 }
 </script>

@@ -47,6 +47,7 @@ body {
   margin-bottom: 20px;
 }
 
+// 表格组件
 .standard-table.el-table {
   thead {
     color: #333;
@@ -63,7 +64,7 @@ body {
   }
 
   td {
-    padding: 5px 0;
+    padding: 13px 0;
     text-align: center;
 
     div {
@@ -72,11 +73,21 @@ body {
       text-overflow: ellipsis;
     }
   }
+
+  .view-title {
+    display: block;
+    color: #1890FF;
+    cursor: pointer;
+  }
 }
 
 // drawer
 .el-drawer__wrapper {
   z-index: 2503 !important;
+}
+
+.el-drawer__body {
+  overflow-y: scroll;
 }
 
 .delete-ico {
