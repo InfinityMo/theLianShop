@@ -3,6 +3,7 @@
     <div class="search-wrap">
       <el-form class="demo-form-inline"
                :model="searchForm"
+               id="form"
                ref="searchForm">
         <el-col :span="7">
           <el-form-item label="商品名称："
@@ -35,7 +36,8 @@
         </el-col>
       </el-form>
     </div>
-    <div class="table-wrap">
+    <div class="table-wrap"
+         ref="table">
       <div class="flex-between-center table-info">
         <h4>未发布列表</h4>
         <el-button type="primary"
@@ -50,10 +52,14 @@
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <drawer title="查看"
-            :width="'370px'"
-            :drawerShow="drawerShow">
-      <div slot="content">1111</div>
+    <drawer title="编辑"
+            :width="'480px'"
+            :wrapperClosable="false"
+            ref="drawer">
+      <div slot="content"
+           class="drawer-content-wrap">
+        <drawer-edit :commodityId="commodity"></drawer-edit>
+      </div>
     </drawer>
   </div>
 </template>
@@ -84,12 +90,11 @@ export default {
           }]
         }
       ],
-      drawerShow: false
+      drawerShow: false,
+      commodity: ''
     }
   },
-  watch: {
 
-  },
   created () {
 
   },
@@ -126,9 +131,10 @@ export default {
       this.$router.push('/commodity/add')
     },
     editMoadl (scoped) {
+      this.$refs.drawer.$data.drawerShow = true
       // const { row } = scoped
       // debugger
-      this.drawerShow = true
+      // this.$refs.drawer
     },
     // modal确认
     modalConfirm () {
@@ -175,4 +181,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "../../../common/styles/page-table";
+.drawer-content-wrap {
+  padding: 0 20px;
+}
 </style>

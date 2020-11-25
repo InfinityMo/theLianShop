@@ -3,8 +3,9 @@
     <el-drawer :title="title"
                :destroy-on-close="true"
                :size="width"
+               :wrapperClosable="wrapperClosable"
                custom-class="drawer-box"
-               :visible.sync="drawerShowCopy"
+               :visible.sync="drawerShow"
                direction="rtl">
       <slot name="content"></slot>
     </el-drawer>
@@ -20,11 +21,6 @@ export default {
     width: {
       type: String
     },
-    drawerShow: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
     wrapperClosable: {
       type: Boolean,
       default: true
@@ -32,7 +28,7 @@ export default {
   },
   data () {
     return {
-      drawerShowCopy: this.drawerShow
+      drawerShow: false
     }
   },
   mounted () {
