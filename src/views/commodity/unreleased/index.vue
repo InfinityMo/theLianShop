@@ -53,7 +53,7 @@
                       @tableChange="tableChange" />
     </div>
     <drawer title="编辑"
-            :width="'480px'"
+            :width="'484px'"
             :wrapperClosable="false"
             ref="drawer">
       <div slot="content"

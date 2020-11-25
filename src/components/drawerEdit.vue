@@ -1,7 +1,7 @@
 <template>
   <div class="drawer-box">
     <hr class="split-line">
-    <el-form label-width="110px"
+    <el-form label-width="101px"
              ref="stepFrom"
              :model="editForm"
              :rules="editFormRules"
@@ -14,6 +14,7 @@
       <el-form-item label="品牌名称："
                     prop="brandName">
         <el-select v-model="editForm.brandName"
+                   popper-class="drawer-dropDown"
                    placeholder="请选择品牌名称">
           <el-option v-for="item in brandArr"
                      :key="item.value"
@@ -25,6 +26,7 @@
       <el-form-item label="所属类目："
                     prop="wareType">
         <el-cascader v-model="editForm.wareType"
+                     popper-class="drawer-dropDown"
                      clearable
                      separator=" - "
                      placeholder="请选择所属类目"
@@ -36,6 +38,8 @@
                   v-model="editForm.wareDate"
                   class="input-with-select">
           <el-select v-model="editForm.wareDateType"
+                     class="date-select"
+                     popper-class="drawer-dropDown"
                      placeholder=""
                      slot="append">
             <el-option v-for="item in wareDateType"
@@ -55,6 +59,7 @@
                     prop="saleTime">
         <el-date-picker v-model="editForm.saleTime"
                         class="edit-date-picker"
+                        popper-class="drawer-dropDown"
                         value-format="yyyy-MM-dd HH:mm"
                         format="yyyy-MM-dd HH:mm"
                         type="datetimerange"
@@ -132,7 +137,7 @@ export default {
 //   margin-bottom: 20px;
 // }
 .drawer-box {
-  width: 100%;
+  // width: 100%;
   .split-line {
     margin: 0 0 20px 0;
     border: none;
@@ -141,6 +146,20 @@ export default {
   }
   .edit-date-picker {
     width: 326px;
+  }
+  /deep/.el-select,
+  /deep/.el-cascader {
+    .el-input__inner {
+      width: 326px;
+    }
+  }
+  .el-input-group__append {
+    .el-select {
+      width: 72px;
+      /deep/.el-input__inner {
+        width: 72px;
+      }
+    }
   }
 }
 </style>
