@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     continueAdd () {
-
+      // this.$emit('stepTwoBack', this.stepOneForm)
     },
     viewCommodity () {
 

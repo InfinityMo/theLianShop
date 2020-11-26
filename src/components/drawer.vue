@@ -7,6 +7,10 @@
                custom-class="drawer-box"
                :visible.sync="drawerShow"
                direction="rtl">
+      <div slot="title">
+        <span>{{title}}</span>
+        <hr class="split-line">
+      </div>
       <slot name="content"></slot>
     </el-drawer>
   </div>
@@ -39,5 +43,11 @@ export default {
 <style lang="less" scoped>
 /deep/.el-drawer__header {
   margin-bottom: 20px;
+}
+.split-line {
+  margin: 20px 0 0 0;
+  border: none;
+  height: 1px;
+  background-color: #d9d9d9;
 }
 </style>

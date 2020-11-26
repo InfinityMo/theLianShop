@@ -71,7 +71,6 @@
 </template>
 <script>
 import Upload from '@/components/upload'
-import { stepOneForm, stepOneFormRules } from './formData'
 export default {
   components: {
     Upload
@@ -86,10 +85,7 @@ export default {
           price: ''
         }],
         imgArr: []
-      },
-      stepOneFormRules: stepOneFormRules,
-      stepOneForm: JSON.parse(JSON.stringify(stepOneForm))
-
+      }
     }
   },
   created () {

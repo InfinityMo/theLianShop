@@ -1,14 +1,15 @@
 <template>
   <div>
-    <el-upload action="#"
+    <el-upload action="https://jsonplaceholder.typicode.com/posts/"
                class="custom-upload"
                @before-upload="beforeUpload"
                @on-success="uploadSuccess"
                :limit="5"
                :file-list="fileList"
-               list-type="picture-card"
-               :auto-upload="false">
-      <div class="upload-icon-wrap">
+               :auto-upload="false"
+               list-type="picture-card">
+      <div class="upload-icon-wrap"
+           v-if="fileList.length<5">
         <i class="upload-icon"></i>
         <p>点击上传</p>
       </div>
@@ -59,6 +60,7 @@ export default {
 
     },
     handleRemove (file) {
+      console.log('fileList:' + this.fileList)
       console.log(file)
     },
     handlePictureCardPreview (file) {

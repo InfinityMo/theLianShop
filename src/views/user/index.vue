@@ -36,7 +36,7 @@
       </el-form>
     </div>
     <div class="table-wrap">
-      <div class="flex-item-center table-info">
+      <div class="flex-between-center table-info">
         <h4>店铺信息列表</h4>
         <el-button type="primary"
                    @click="addHandle">新增</el-button>
