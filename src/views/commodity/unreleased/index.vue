@@ -52,13 +52,17 @@
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <drawer title="编辑"
-            :width="'497px'"
-            :wrapperClosable="false"
+    <drawer :title="drawerTitle"
+            :width="drawerWidth"
+            :wrapperClosable="drawerWrapperClosable"
             ref="drawer">
       <div slot="content"
            class="drawer-content-wrap">
-        <drawer-edit :commodityId="commodity"></drawer-edit>
+        <drawer-edit v-if="drawerFlag===0"
+                     :commodityId="commodity"></drawer-edit>
+        <drawer-view v-else
+                     :commodityId="commodity">
+        </drawer-view>
       </div>
     </drawer>
   </div>
@@ -90,8 +94,12 @@ export default {
           }]
         }
       ],
+      drawerFlag: 0, // 0是编辑，1是查看
       drawerShow: false,
-      commodity: ''
+      drawerWrapperClosable: false,
+      drawerTitle: '编辑',
+      commodity: '',
+      drawerWidth: '497px'
     }
   },
 
@@ -131,23 +139,21 @@ export default {
       this.$router.push('/commodity/add')
     },
     editMoadl (scoped) {
+      this.drawerFlag = 0
+      this.drawerTitle = '编辑'
+      this.drawerWrapperClosable = false
+      this.drawerWidth = '497px'
       this.$refs.drawer.$data.drawerShow = true
       // const { row } = scoped
       // debugger
       // this.$refs.drawer
     },
-    // modal确认
-    modalConfirm () {
-      this.modalShow = false
-      this.brandArr = []
-      this.selectOption = []
-      this.getTableData()
-      this.getSelects()
-    },
-    // moadl关闭
-    modalCancel () {
-      this.brandArr = []
-      this.modalShow = false
+    toView (scoped) {
+      this.drawerFlag = 1
+      this.drawerTitle = '商品信息'
+      this.drawerWrapperClosable = true
+      this.drawerWidth = '497px'
+      this.$refs.drawer.$data.drawerShow = true
     },
     deleteHandle (scoped) {
       const { row } = scoped
