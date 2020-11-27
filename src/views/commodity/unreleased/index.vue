@@ -59,6 +59,7 @@
       <div slot="content"
            class="drawer-content-wrap">
         <drawer-edit v-if="drawerFlag===0"
+                     @closeDrawer="closeDrawer"
                      :commodityId="commodity"></drawer-edit>
         <drawer-view v-else
                      :commodityId="commodity">
@@ -143,7 +144,8 @@ export default {
       this.drawerTitle = '编辑'
       this.drawerWrapperClosable = false
       this.drawerWidth = '497px'
-      this.$refs.drawer.$data.drawerShow = true
+      // this.$refs.drawer.$data.drawerShow = true
+      this.$refs.drawer.drawerOpen()
       // const { row } = scoped
       // debugger
       // this.$refs.drawer
@@ -152,8 +154,9 @@ export default {
       this.drawerFlag = 1
       this.drawerTitle = '商品信息'
       this.drawerWrapperClosable = true
-      this.drawerWidth = '497px'
-      this.$refs.drawer.$data.drawerShow = true
+      this.drawerWidth = '510px'
+      // this.$refs.drawer.$data.drawerShow = true
+      this.$refs.drawer.drawerOpen()
     },
     deleteHandle (scoped) {
       const { row } = scoped
@@ -181,6 +184,15 @@ export default {
       this.PAGING.pageSize = changeParams.pageSize
       this.PAGING.pageNum = changeParams.pageNum
       this.getTableData()
+    },
+    closeDrawer () {
+      this.$confirm('还有未保存的编辑，确定关闭吗？', '提示', {
+        customClass: 'drawer-message-box'
+      }).then(_ => {
+        this.$refs.drawer.$data.drawerShow = false
+      }).catch(_ => { })
+      // this.$refs.drawer.$data.drawerShow = false
+      // this.$refs.drawer.drawerClose()
     }
   }
 }

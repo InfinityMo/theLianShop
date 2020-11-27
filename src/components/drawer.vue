@@ -1,11 +1,13 @@
 <template>
   <div class="drawer-wrap">
     <el-drawer :title="title"
+               @open="drawerOpen"
                :destroy-on-close="true"
                :size="width"
                :wrapperClosable="wrapperClosable"
                custom-class="drawer-box"
                :visible.sync="drawerShow"
+               :before-close="beforeClose"
                direction="rtl">
       <div slot="title">
         <span>{{title}}</span>
@@ -37,6 +39,23 @@ export default {
   },
   mounted () {
 
+  },
+  methods: {
+    drawerOpen () {
+      this.drawerShow = true
+    },
+
+    beforeClose (done) {
+      if (!this.wrapperClosable) {
+        this.$confirm('还有未保存的编辑，确定关闭吗？', '提示', {
+          customClass: 'drawer-message-box'
+        }).then(_ => {
+          done()
+        }).catch(_ => { })
+      } else {
+        done()
+      }
+    }
   }
 }
 </script>

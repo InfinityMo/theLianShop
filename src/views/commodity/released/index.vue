@@ -2,154 +2,161 @@
   <div class="page">
     <div class="search-wrap">
       <el-form class="demo-form-inline"
+               :model="searchForm"
+               id="form"
                ref="searchForm">
-        <el-col :span="9">
-          <el-form-item label="店铺名称：">
-            <el-tooltip class="tooltip-reset"
-                        effect="dark"
-                        :disabled="tipContent ? false:true"
-                        :content="tipContent"
-                        placement="top-start">
-              <el-cascader v-model="searchForm.RowGuid"
-                           placeholder="请选择店铺名称"
-                           popper-class="reset-casc"
-                           :options="selectOption"
-                           filterable
-                           clearable>
-                <span slot-scope="{ data }">
-                  <el-tooltip effect="dark"
-                              :content="data.label"
-                              placement="left">
-                    <span>{{data.label}}</span>
-                  </el-tooltip>
-                </span>
-              </el-cascader>
-            </el-tooltip>
+        <el-col :span="7">
+          <el-form-item label="商品名称："
+                        label-width="80px"
+                        prop="commodityName">
+            <el-input placeholder="请输入商品名称"
+                      v-model="searchForm.commodityName"
+                      clearable>
+            </el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="7">
+          <el-form-item label="商品类型："
+                        label-width="80px"
+                        prop="commodityType">
+            <el-cascader :options="wareTypeOptions"
+                         v-model="searchForm.commodityType"
+                         placeholder="请选择商品类型"
+                         :props="{ checkStrictly: true }"
+                         clearable>
+            </el-cascader>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
           <el-form-item class="search-btn">
+            <el-button @click="resetForm('searchForm')">重置</el-button>
             <el-button type="primary"
                        @click="queryHandel">查询</el-button>
           </el-form-item>
         </el-col>
       </el-form>
     </div>
-    <div class="table-wrap">
-      <div class="flex-item-center table-info">
-        <h4>店铺信息列表</h4>
+    <div class="table-wrap"
+         ref="table">
+      <div class="flex-between-center table-info">
+        <h4>未发布列表</h4>
         <el-button type="primary"
-                   @click="addHandle">新增</el-button>
+                   @click="addHandle"
+                   class="flex-center add-btn">
+          <i class="add-icon"></i>
+          <label>新增商品</label>
+        </el-button>
       </div>
       <standard-table :dataSource="tableData"
                       :columns="columns"
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <Dialog :modalTitle="modalTitle"
-            :addEditId="addEditId"
-            :brandArr="brandArr"
-            v-if="modalShow"
-            :modalShow="modalShow"
-            @modalCancel="modalCancel"
-            @modalConfirm="modalConfirm" />
+    <drawer :title="drawerTitle"
+            :width="drawerWidth"
+            :wrapperClosable="drawerWrapperClosable"
+            ref="drawer">
+      <div slot="content"
+           class="drawer-content-wrap">
+        <drawer-edit v-if="drawerFlag===0"
+                     @closeDrawer="closeDrawer"
+                     :commodityId="commodity"></drawer-edit>
+        <drawer-view v-else
+                     :commodityId="commodity">
+        </drawer-view>
+      </div>
+    </drawer>
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/dealTable'
 import { columnsData } from './columnsData.js'
-import Dialog from './dialog'
 import { tableSearchForm } from './searchForm'
 
 export default {
   mixins: [tableMixin],
-  components: { Dialog },
   data () {
     return {
-      tipContent: '',
-      searchForm: JSON.parse(JSON.stringify(tableSearchForm)),
+      searchForm: tableSearchForm,
       queryFrom: { RowGuid: '' },
       columns: columnsData(this.$createElement, this),
       tableData: [],
-      selectOption: [],
-      modalTitle: '', // 弹窗的名称
-      modalShow: false,
-      addEditId: '', // 编辑时存在id，新增时id为空
-      brandArr: [] // 弹窗品牌穿梭框数据
+      wareTypeOptions: [
+        {
+          value: 'xihu',
+          label: '洗护',
+          children: [{
+            value: 'xx',
+            label: '香薰',
+            children: [{
+              value: 'jc',
+              label: '绿茶籽'
+            }]
+          }]
+        }
+      ],
+      drawerFlag: 0, // 0是编辑，1是查看
+      drawerShow: false,
+      drawerWrapperClosable: false,
+      drawerTitle: '编辑',
+      commodity: '',
+      drawerWidth: '497px'
     }
   },
-  watch: {
-    'searchForm.RowGuid' (newVal, oldVal) {
-      if (newVal.length && newVal.length > 0) {
-        this.tipContent = this.selectOption.filter(item => item.value === this.searchForm.RowGuid[0])[0].label
-      } else {
-        this.tipContent = ''
-      }
-    }
-  },
+
   created () {
-    this.getSelects()
+
   },
   mounted () {
-    this.getTableData() // 获取列表数据
+    this.getTableData()
   },
   methods: {
-    getSelects () {
-      this._getSelectData(1).then(res => {
-        this.selectOption = res
-      }) // 获取下拉框数据
-    },
     getTableData () {
-      this.$request.post('/shopSelect', {
-        pageNum: this.PAGING.pageNum,
-        pageSize: this.PAGING.pageSize,
-        ...this.queryFrom
-      }).then(res => {
-        const resData = res.data.result || []
-        this.tableData = resData
-        this.PAGING.total = res.data.total
-      })
+      for (let i = 0; i < 2; i++) {
+        this.tableData.push({
+          commodityName: 'innisfree/悦诗风吟绿茶泡沫洁面乳女 补水保湿温和控油洗面奶男',
+          price: '60 - 80',
+          type: '洁面乳',
+          limitNum: 3,
+          dateTime: '2020-11-25 - 2020-11-28'
+        })
+      }
+      // this.tableData = [{
+
+      // }]
+      this.PAGING.total = 10
+      // this.$request.post('/shopSelect', {
+      //   pageNum: this.PAGING.pageNum,
+      //   pageSize: this.PAGING.pageSize,
+      //   ...this.queryFrom
+      // }).then(res => {
+      //   const resData = res.data.result || []
+      //   this.tableData = resData
+      //   this.PAGING.total = res.data.total
+      // })
     },
     // 新增
     addHandle () {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.addEditId = ''
-        this.modalTitle = '新增店铺'
-        this.modalShow = true
-      })
+      this.$router.push('/commodity/add')
     },
     editMoadl (scoped) {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.modalShow = true
-        const { row } = scoped
-        this.addEditId = row.RowGuid
-        this.modalTitle = '编辑店铺'
-      })
+      this.drawerFlag = 0
+      this.drawerTitle = '编辑'
+      this.drawerWrapperClosable = false
+      this.drawerWidth = '497px'
+      // this.$refs.drawer.$data.drawerShow = true
+      this.$refs.drawer.drawerOpen()
+      // const { row } = scoped
+      // debugger
+      // this.$refs.drawer
     },
-    // modal确认
-    modalConfirm () {
-      this.modalShow = false
-      this.brandArr = []
-      this.selectOption = []
-      this.getTableData()
-      this.getSelects()
-    },
-    // moadl关闭
-    modalCancel () {
-      this.brandArr = []
-      this.modalShow = false
+    toView (scoped) {
+      this.drawerFlag = 1
+      this.drawerTitle = '商品信息'
+      this.drawerWrapperClosable = true
+      this.drawerWidth = '510px'
+      // this.$refs.drawer.$data.drawerShow = true
+      this.$refs.drawer.drawerOpen()
     },
     deleteHandle (scoped) {
       const { row } = scoped
@@ -177,10 +184,16 @@ export default {
       this.PAGING.pageSize = changeParams.pageSize
       this.PAGING.pageNum = changeParams.pageNum
       this.getTableData()
+    },
+    off () {
+
     }
   }
 }
 </script>
 <style lang="less" scoped>
 @import "../../../common/styles/page-table";
+.drawer-content-wrap {
+  padding: 0 20px;
+}
 </style>

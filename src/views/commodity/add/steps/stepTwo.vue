@@ -57,7 +57,8 @@
           </el-col>
         </el-row>
       </div>
-      <div class="add-commodity"
+      <div v-if="commodityData.commodityArr.length<5"
+           class="add-commodity"
            @click="addCommodity">
         <p><i></i><span>添加新的规格</span></p>
       </div>
