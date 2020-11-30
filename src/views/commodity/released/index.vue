@@ -39,7 +39,7 @@
     <div class="table-wrap"
          ref="table">
       <div class="flex-between-center table-info">
-        <h4>未发布列表</h4>
+        <h4>已发布列表</h4>
         <el-button type="primary"
                    @click="addHandle"
                    class="flex-center add-btn">

@@ -4,35 +4,34 @@ export const columnsData = (h, $this) => [{
   align: 'center',
   width: 80
 }, {
-  dataKey: 'shop_name',
-  title: '店铺名称'
-}, {
-  dataKey: 'shop_url',
-  title: '店铺链接'
-}, {
-  dataKey: 'seller_type',
-  title: '店铺类型'
-}, {
-  dataKey: 'update_time',
-  title: '更新时间'
-},
-// {
-//   dataKey: 'update_by',
-//   title: '更新人'
-// },
-{
-  dataKey: 'operate',
-  title: '操作',
-  width: 120,
-  render: (h, scoped) => {
+  dataKey: 'orderNo',
+  title: '订单编号',
+  width: 250,
+  render: (h, scoped, row) => {
     return (
       <div>
-        <el-button type="text" onClick={() => $this.editMoadl(scoped)}>编辑</el-button>
-        <el-divider direction="vertical"></el-divider>
-        <el-popconfirm onOnConfirm={() => $this.deleteHandle(scoped)} placement="top" title="确定删除吗？">
-          <el-button type="text" slot="reference" >删除</el-button>
-        </el-popconfirm>
+        <el-tooltip class="item" effect="dark" content={scoped.row.orderNo} placement="top">
+          <span class="view-title ell" onClick={() => $this.toView(scoped)}>{scoped.row.orderNo}</span>
+        </el-tooltip>
       </div>
     )
   }
+}, {
+  dataKey: 'userName',
+  title: '姓名'
+}, {
+  dataKey: 'userNum',
+  title: '工号'
+}, {
+  dataKey: 'userDept',
+  title: '部门'
+},
+{
+  dataKey: 'orderAmount',
+  title: '订单金额',
+  width: 200
+}, {
+  dataKey: 'orderTime',
+  title: '订单生成时间',
+  width: 200
 }]
