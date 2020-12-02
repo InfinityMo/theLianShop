@@ -17,11 +17,11 @@ export const columnsData = (h, $this) => [{
     )
   }
 }, {
-  dataKey: 'userName',
-  title: '姓名'
-}, {
   dataKey: 'userNum',
   title: '工号'
+}, {
+  dataKey: 'userName',
+  title: '姓名'
 }, {
   dataKey: 'userDept',
   title: '部门'

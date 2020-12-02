@@ -2,10 +2,6 @@
   <div class="drawer-box">
     <ul class="base-info">
       <li>
-        <label>订单编号：</label>
-        <span>{{baseData.wareName}}</span>
-      </li>
-      <li>
         <label>用户名称：</label>
         <span>{{baseData.brandName}}</span>
       </li>
@@ -16,14 +12,6 @@
       <li>
         <label>工号：</label>
         <span>{{baseData.limitNum}}</span>
-      </li>
-      <li>
-        <label>订单金额：</label>
-        <span>{{baseData.wareDate}}</span>
-      </li>
-      <li>
-        <label>订单生成时间：</label>
-        <span>{{baseData.wareDate}}</span>
       </li>
     </ul>
     <ul class="commdity"

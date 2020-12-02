@@ -6,7 +6,7 @@ export const columnsData = (h, $this) => [{
 }, {
   dataKey: 'commodityName',
   title: '商品名称',
-  width: 300,
+  width: 250,
   render: (h, scoped, row) => {
     return (
       <div>
@@ -29,17 +29,17 @@ export const columnsData = (h, $this) => [{
 {
   dataKey: 'offTime',
   title: '下架时间',
-  width: 150
+  width: 140
 },
 {
   dataKey: 'dateTime',
   title: '上/下架时间',
-  width: 200
+  width: 280
 },
 {
   dataKey: 'operate',
   title: '操作',
-  width: 100,
+  width: 80,
   render: (h, scoped) => {
     return (
       <div>

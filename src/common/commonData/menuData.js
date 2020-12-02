@@ -41,11 +41,5 @@ export default [
     pTitle: '积分管理',
     icon: 'integral',
     pPath: '/integral/integralManage'
-  },
-  {
-    pId: '6',
-    pTitle: '兑换记录',
-    icon: 'check',
-    pPath: '/check/checkManage'
   }
 ]
