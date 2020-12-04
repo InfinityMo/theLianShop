@@ -193,8 +193,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import "../../../common/styles/page-table";
+@import "~@/common/styles/page-table";
 .drawer-content-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   padding: 0 20px;
 }
 </style>

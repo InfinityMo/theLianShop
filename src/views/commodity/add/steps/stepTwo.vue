@@ -33,6 +33,7 @@
           <el-col :span="12">
             <el-form-item label="生产日期：">
               <el-date-picker v-model="commodity.date"
+                              :picker-options="disabledTime"
                               type="date"
                               placeholder="请选择生产日期"></el-date-picker>
             </el-form-item>
@@ -78,6 +79,11 @@ export default {
   },
   data () {
     return {
+      disabledTime: {
+        disabledDate: (time) => {
+          return time.getTime() > Date.now() - 1 * 24 * 3600 * 1000
+        }
+      },
       commodityData: {
         commodityArr: [{
           size: '',

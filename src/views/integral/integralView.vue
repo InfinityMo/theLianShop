@@ -26,11 +26,10 @@
         <span>剩余积分</span>
       </div>
     </div>
-    <div class="infinite-list-wrapper"
-         @scroll.passive="getScroll($event)">
+    <div class="infinite-list-wrapper">
       <ul class="list"
           v-infinite-scroll="load"
-          :infinite-scroll-distance="50"
+          infinite-scroll-distance="60"
           infinite-scroll-disabled="disabled">
         <li v-for="(item,index) in infiniteArr"
             :key="index"
@@ -41,15 +40,13 @@
           <span>{{item.surplus}}</span>
         </li>
       </ul>
-      <p v-if="loading"
-         class="tip">加载中...</p>
       <p v-if="noMore"
          class="tip">没有更多了</p>
     </div>
   </div>
 </template>
 <script>
-
+import mockData from './mockData'
 export default {
 
   props: {
@@ -66,43 +63,36 @@ export default {
         userNum: 'TL - 1563',
         integral: 100
       },
-      infiniteArr: [{
-        operateTime: '2020-11-12 13:34',
-        operator: '管理员',
-        alterFlag: 0,
-        alter: 30,
-        surplus: 200
-      }],
-      loading: false
+      infiniteArr: [...mockData],
+      loading: false,
+      total: 100
     }
   },
   computed: {
     noMore () {
-      return this.infiniteArr.length >= 15
+      return this.infiniteArr.length >= this.total
     },
     disabled () {
       return this.loading || this.noMore
     }
   },
+
+  mounted () {
+
+  },
   methods: {
-    getScroll (event) {
-      // 滚动条距离底部的距离scrollBottom
-      const scrollBottom = event.target.scrollHeight - event.target.scrollTop - event.target.clientHeight
-      // if (this.finished && scrollBottom < 40) {
-      console.log(scrollBottom)
-      //  操作
-      // }
-    },
     load () {
       this.loading = true
       setTimeout(() => {
-        this.infiniteArr.push({
-          operateTime: '2020-11-12 13:34',
-          operator: '管理员',
-          alterFlag: 0,
-          alter: 30,
-          surplus: 200
-        })
+        for (let i = 0; i < 5; i++) {
+          this.infiniteArr.push({
+            operateTime: '2020-11-01 13:34',
+            operator: i % 2 === 0 ? '管理员' : 'Infinity',
+            alterFlag: 0,
+            alter: 303,
+            surplus: 2003
+          })
+        }
         this.loading = false
       }, 200)
     }
@@ -143,7 +133,7 @@ export default {
   }
 }
 .infinite-list-wrapper {
-  height: calc(100% - 199px);
+  height: calc(100vh - 281px);
   padding-top: 199px;
   overflow: auto;
   li {

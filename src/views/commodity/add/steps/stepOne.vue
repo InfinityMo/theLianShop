@@ -60,6 +60,8 @@
                         align="right"
                         unlink-panels
                         range-separator="~"
+                        @change="disabledTimeHandle"
+                        :picker-options="disabledTime"
                         start-placeholder="上架时间"
                         end-placeholder="下架时间">
         </el-date-picker>
@@ -80,10 +82,16 @@
 </template>
 <script>
 import { stepOneForm, stepOneFormRules } from './formData'
+import { dateFormat } from '@/common/utils/funcStore'
 export default {
 
   data () {
     return {
+      disabledTime: {
+        disabledDate: (time) => {
+          return time.getTime() < Date.now() - 1 * 24 * 3600 * 1000
+        }
+      },
       stepOneFormRules: stepOneFormRules,
       stepOneForm: Object.assign({}, stepOneForm),
       wareDateType: [
@@ -125,6 +133,16 @@ export default {
     // this.getWareType()
   },
   methods: {
+    disabledTimeHandle () {
+      const startAtOne = new Date(this.stepOneForm.saleTime[0]) * 1000 / 1000
+      const startAtTwo = new Date(this.stepOneForm.saleTime[1]) * 1000 / 1000
+      if (startAtOne < Date.now()) {
+        this.stepOneForm.saleTime[0] = dateFormat('YYYY-mm-dd HH:MM', new Date())
+      }
+      if (startAtTwo < Date.now()) {
+        this.stepOneForm.saleTime[1] = dateFormat('YYYY-mm-dd HH:MM', new Date())
+      }
+    },
     getWareType () {
       this.$request.mock('mockData/mock.json?t=' + new Date().getTime()).then(res => {
         debugger

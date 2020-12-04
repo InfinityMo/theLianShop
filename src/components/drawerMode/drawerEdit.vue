@@ -66,6 +66,8 @@
                         align="right"
                         unlink-panels
                         range-separator="~"
+                        @change="disabledTimeHandle"
+                        :picker-options="disabledTime"
                         start-placeholder="上架时间"
                         end-placeholder="下架时间">
         </el-date-picker>
@@ -111,6 +113,7 @@
         <el-form-item label="生产日期：">
           <el-date-picker v-model="commodity.date"
                           popper-class="drawer-dropDown"
+                          :picker-options="disabledTimeProduct"
                           type="date"
                           placeholder="请选择生产日期"></el-date-picker>
         </el-form-item>
@@ -144,6 +147,7 @@
 <script>
 import { editForm, editFormRules } from '@/common/formData/form'
 import Upload from '@/components/upload'
+import { dateFormat } from '@/common/utils/funcStore'
 export default {
   components: {
     Upload
@@ -179,6 +183,16 @@ export default {
           label: '日'
         }
       ],
+      disabledTime: {
+        disabledDate: (time) => {
+          return time.getTime() < Date.now() - 1 * 24 * 3600 * 1000
+        }
+      },
+      disabledTimeProduct: {
+        disabledDate: (time) => {
+          return time.getTime() > Date.now() - 1 * 24 * 3600 * 1000
+        }
+      },
       brandArr: [{
         value: '1',
         label: '悦诗风吟'
@@ -203,6 +217,16 @@ export default {
     }
   },
   methods: {
+    disabledTimeHandle () {
+      const startAtOne = new Date(this.editForm.saleTime[0]) * 1000 / 1000
+      const startAtTwo = new Date(this.editForm.saleTime[1]) * 1000 / 1000
+      if (startAtOne < Date.now()) {
+        this.editForm.saleTime[0] = dateFormat('YYYY-mm-dd HH:MM', new Date())
+      }
+      if (startAtTwo < Date.now()) {
+        this.editForm.saleTime[1] = dateFormat('YYYY-mm-dd HH:MM', new Date())
+      }
+    },
     removeItem (index) {
       this.commodityData.commodityArr.splice(index, 1)
     },

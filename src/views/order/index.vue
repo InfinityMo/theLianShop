@@ -38,6 +38,14 @@
          ref="table">
       <div class="flex-between-center table-info">
         <h4>订单列表</h4>
+        <div>
+          <el-button type="primary"
+                     @click="exportHandle"
+                     class="flex-center add-btn">
+            <i class="export-icon"></i>
+            <label>导出列表</label>
+          </el-button>
+        </div>
       </div>
       <standard-table :dataSource="tableData"
                       :columns="columns"
@@ -165,6 +173,10 @@ export default {
 <style lang="less" scoped>
 @import "~@/common/styles/page-table";
 .drawer-content-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   padding: 0 20px;
 }
 </style>

@@ -137,7 +137,7 @@ export default {
       this.drawerFlag = 1
       this.drawerTitle = '积分变更记录'
       this.drawerWrapperClosable = true
-      this.drawerWidth = '550px'
+      this.drawerWidth = '537px'
       // this.$refs.drawer.$data.drawerShow = true
       this.$refs.drawer.drawerOpen()
     },
@@ -183,6 +183,10 @@ export default {
 <style lang="less" scoped>
 @import "~@/common/styles/page-table";
 .drawer-content-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   padding: 0 20px;
 }
 </style>
