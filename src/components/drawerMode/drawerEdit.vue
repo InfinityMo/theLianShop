@@ -228,6 +228,9 @@ export default {
       }
     },
     removeItem (index) {
+      if (this.commodityData.commodityArr.length < 2) {
+        return false
+      }
       this.commodityData.commodityArr.splice(index, 1)
     },
     addCommodity () {

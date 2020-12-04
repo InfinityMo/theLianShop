@@ -25,7 +25,7 @@ export default {
       // this.$emit('stepTwoBack', this.stepOneForm)
     },
     viewCommodity () {
-
+      this.$router.push('/commodity/unreleased')
     }
   }
 }

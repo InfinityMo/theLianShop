@@ -33,7 +33,7 @@ export default {
   data () {
     return {
       stepsData: ['基本信息', '图片/规格', '完成'],
-      active: 0
+      active: 1
     }
   },
 

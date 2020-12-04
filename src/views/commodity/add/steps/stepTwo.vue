@@ -9,7 +9,9 @@
                       prop="imgArr"
                       :rules="[{ required: true, message: '请上传图片', trigger: ['change','blur'] }]">
           <div class="img-box">
-            <Upload />
+            <Upload :fileArr="commodityData.imgArr"
+                    @uploadAdd="uploadAdd"
+                    @uploadRemove="uploadRemove" />
           </div>
         </el-form-item>
       </el-row>
@@ -99,13 +101,24 @@ export default {
 
   },
   methods: {
+    uploadAdd (fileList) {
+
+    },
+    uploadRemove (fileList) {
+
+    },
     back () {
       this.$emit('stepTwoBack', this.stepOneForm)
     },
     removeItem (index) {
+      if (this.commodityData.commodityArr.length < 2) {
+        return false
+      }
       this.commodityData.commodityArr.splice(index, 1)
     },
     addCommodity () {
+      this.commodityData.imgArr.push(1)
+      console.log(this.commodityData.imgArr)
       this.commodityData.commodityArr.push({
         size: '',
         date: '',
@@ -114,15 +127,14 @@ export default {
       })
     },
     submitForm () {
-      this.$emit('stepTwo', this.commodityData)
-      // this.$refs.commodityData.validate((valid) => {
-      //   if (valid) {
-      //     this.$emit('stepTwo', this.commodityData)
-      //   } else {
-      //     console.log('error submit!!')
-      //     return false
-      //   }
-      // })
+      this.$refs.commodityData.validate((valid) => {
+        if (valid) {
+          this.$emit('stepTwo', this.commodityData)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }
