@@ -131,6 +131,9 @@ export default {
       this.drawerWidth = '410px'
       this.$refs.drawer.drawerOpen()
     },
+    exportHandle () {
+
+    },
     deleteHandle (scoped) {
       const { row } = scoped
       this.$request.post('/shopDelete', {
