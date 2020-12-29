@@ -150,13 +150,13 @@ export default {
     },
     next () {
       this.$emit('stepOne', this.stepOneForm)
-      // this.$refs.stepFrom.validate((valid) => {
-      //   if (valid) {
-      //     this.$emit('stepOne', this.stepOneForm)
-      //   } else {
-      //     return false
-      //   }
-      // })
+      this.$refs.stepFrom.validate((valid) => {
+        if (valid) {
+          this.$emit('stepOne', this.stepOneForm)
+        } else {
+          return false
+        }
+      })
     }
   }
 }

@@ -2,144 +2,142 @@
   <div class="page">
     <div class="search-wrap">
       <el-form class="demo-form-inline"
+               :model="searchForm"
+               id="form"
                ref="searchForm">
-        <el-col :span="9">
-          <el-form-item label="店铺名称：">
-            <el-tooltip class="tooltip-reset"
-                        effect="dark"
-                        :disabled="tipContent ? false:true"
-                        :content="tipContent"
-                        placement="top-start">
-              <el-cascader v-model="searchForm.RowGuid"
-                           placeholder="请选择店铺名称"
-                           popper-class="reset-casc"
-                           :options="selectOption"
-                           filterable
-                           clearable>
-                <span slot-scope="{ data }">
-                  <el-tooltip effect="dark"
-                              :content="data.label"
-                              placement="left">
-                    <span>{{data.label}}</span>
-                  </el-tooltip>
-                </span>
-              </el-cascader>
-            </el-tooltip>
+        <el-col :span="7">
+          <el-form-item label="工号："
+                        label-width="45px"
+                        prop="userNum">
+            <el-input placeholder="请输入工号"
+                      v-model="searchForm.userNum"
+                      clearable>
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="姓名："
+                        label-width="80px"
+                        prop="userName">
+            <el-input placeholder="请输入姓名"
+                      v-model="searchForm.userName"
+                      clearable>
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="状态："
+                        label-width="80px"
+                        prop="status">
+            <el-select v-model="searchForm.status"
+                       placeholder="请选择状态">
+              <el-option v-for="item in status"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="3">
           <el-form-item class="search-btn">
+            <el-button @click="resetForm('searchForm')">重置</el-button>
             <el-button type="primary"
                        @click="queryHandel">查询</el-button>
           </el-form-item>
         </el-col>
       </el-form>
     </div>
-    <div class="table-wrap">
+    <div class="table-wrap"
+         ref="table">
       <div class="flex-between-center table-info">
-        <h4>店铺信息列表</h4>
-        <el-button type="primary"
-                   @click="addHandle">新增</el-button>
+        <h4>用户列表</h4>
       </div>
       <standard-table :dataSource="tableData"
                       :columns="columns"
                       :pagination="PAGING"
                       @tableChange="tableChange" />
     </div>
-    <Dialog :modalTitle="modalTitle"
-            :addEditId="addEditId"
-            :brandArr="brandArr"
-            v-if="modalShow"
-            :modalShow="modalShow"
-            @modalCancel="modalCancel"
-            @modalConfirm="modalConfirm" />
   </div>
 </template>
 <script>
 import tableMixin from '@/mixins/dealTable'
 import { columnsData } from './columnsData.js'
-import Dialog from './dialog'
 import { tableSearchForm } from './searchForm'
-
 export default {
   mixins: [tableMixin],
-  components: { Dialog },
   data () {
     return {
-      tipContent: '',
-      searchForm: JSON.parse(JSON.stringify(tableSearchForm)),
+      searchForm: tableSearchForm,
       queryFrom: { RowGuid: '' },
       columns: columnsData(this.$createElement, this),
       tableData: [],
-      selectOption: [],
-      modalTitle: '', // 弹窗的名称
-      modalShow: false,
-      addEditId: '', // 编辑时存在id，新增时id为空
-      brandArr: [] // 弹窗品牌穿梭框数据
+      drawerFlag: 0, // 0是编辑，1是查看
+      drawerShow: false,
+      drawerWrapperClosable: false,
+      drawerTitle: '编辑',
+      commodity: '',
+      drawerWidth: '497px',
+      status: [{
+        value: 3,
+        label: '全部'
+      }, {
+        value: 1,
+        label: '启用'
+      }, {
+        value: 0,
+        label: '禁用'
+      }]
     }
   },
-  watch: {
-    'searchForm.RowGuid' (newVal, oldVal) {
-      if (newVal.length && newVal.length > 0) {
-        this.tipContent = this.selectOption.filter(item => item.value === this.searchForm.RowGuid[0])[0].label
-      } else {
-        this.tipContent = ''
-      }
-    }
-  },
+
   created () {
-    // this.getSelects()
+
   },
   mounted () {
-    this.getTableData() // 获取列表数据
+    this.getTableData()
   },
   methods: {
-    getSelects () {
-      this._getSelectData(1).then(res => {
-        this.selectOption = res
-      }) // 获取下拉框数据
-    },
 
+    getTableData () {
+      for (let i = 0; i < 2; i++) {
+        this.tableData.push({
+          id: i,
+          orderNo: 'UDDFSHF723143312315',
+          userName: '张三',
+          userNum: 'TL - 1563',
+          valid: true
+        })
+      }
+      // this.tableData = [{
+
+      // }]
+      this.PAGING.total = 10
+      // this.$request.post('/shopSelect', {
+      //   pageNum: this.PAGING.pageNum,
+      //   pageSize: this.PAGING.pageSize,
+      //   ...this.queryFrom
+      // }).then(res => {
+      //   const resData = res.data.result || []
+      //   this.tableData = resData
+      //   this.PAGING.total = res.data.total
+      // })
+    },
+    switchChange (scoped) {
+      const { row } = scoped
+      const target = this.tableData.filter(i => i.id === row.id)
+      target[0].valid = !target[0].valid
+    },
     // 新增
     addHandle () {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.addEditId = ''
-        this.modalTitle = '新增店铺'
-        this.modalShow = true
-      })
+      this.$router.push('/commodity/add')
     },
-    editMoadl (scoped) {
-      this._getSelectData(6).then(res => {
-        res.map(item => {
-          this.brandArr.push({
-            label: item.label,
-            key: item.value
-          })
-        })
-        this.modalShow = true
-        const { row } = scoped
-        this.addEditId = row.RowGuid
-        this.modalTitle = '编辑店铺'
-      })
-    },
-    // modal确认
-    modalConfirm () {
-      this.modalShow = false
-      this.brandArr = []
-      this.selectOption = []
-      this.getTableData()
-      this.getSelects()
-    },
-    // moadl关闭
-    modalCancel () {
-      this.brandArr = []
-      this.modalShow = false
+    toView (scoped) {
+      this.drawerFlag = 1
+      this.drawerTitle = '购物车'
+      this.drawerWrapperClosable = true
+      this.drawerWidth = '410px'
+      this.$refs.drawer.drawerOpen()
     },
     deleteHandle (scoped) {
       const { row } = scoped
@@ -167,10 +165,26 @@ export default {
       this.PAGING.pageSize = changeParams.pageSize
       this.PAGING.pageNum = changeParams.pageNum
       this.getTableData()
+    },
+    closeDrawer () {
+      this.$confirm('还有未保存的编辑，确定关闭吗？', '提示', {
+        customClass: 'drawer-message-box'
+      }).then(_ => {
+        this.$refs.drawer.$data.drawerShow = false
+      }).catch(_ => { })
+      // this.$refs.drawer.$data.drawerShow = false
+      // this.$refs.drawer.drawerClose()
     }
   }
 }
 </script>
 <style lang="less" scoped>
-@import "../../common/styles/page-table";
+@import "~@/common/styles/page-table";
+.drawer-content-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 0 20px;
+}
 </style>

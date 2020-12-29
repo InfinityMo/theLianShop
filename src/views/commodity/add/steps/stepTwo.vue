@@ -127,14 +127,14 @@ export default {
       })
     },
     submitForm () {
-      this.$refs.commodityData.validate((valid) => {
-        if (valid) {
-          this.$emit('stepTwo', this.commodityData)
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+      // this.$refs.commodityData.validate((valid) => {
+      //   if (valid) {
+      //     this.$emit('stepTwo', this.commodityData)
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
     }
   }
 }
